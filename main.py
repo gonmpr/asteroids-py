@@ -1,8 +1,12 @@
 import pygame
 from constants import *
 from player import *
+from asteroid import *
+from asteroidfield import *
+
 
 def main():
+
     #delta-time: amount of time between each frame
     dt = 0
 
@@ -13,12 +17,15 @@ def main():
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
     Player.containers = (updatable, drawable)
+    AsteroidField.containers = (updatable)
+    Asteroid.containers = (asteroids, updatable, drawable)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-
+    asteroids_spawn_field = AsteroidField()
 
 
     while True:
