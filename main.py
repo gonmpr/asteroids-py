@@ -1,7 +1,7 @@
 import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state
-
+from player import Player
 def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
     print(f"Screen width: {SCREEN_WIDTH}")
@@ -13,7 +13,7 @@ def main():
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-
+    player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) 
 
     while True:
        for event in pygame.event.get():
@@ -23,7 +23,8 @@ def main():
        log_state()
 
        screen.fill("black")
-
+       player.update(dt)
+       player.draw(screen)
 
        pygame.display.flip()
 
