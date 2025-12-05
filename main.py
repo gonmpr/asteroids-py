@@ -1,4 +1,5 @@
 import pygame
+import gif_pygame
 import sys
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state, log_event
@@ -20,6 +21,8 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    background_gif = gif_pygame.load("background.gif")
+
 
     #groups
     updatable = pygame.sprite.Group()
@@ -35,15 +38,13 @@ def main():
     #player
     Player.containers = (updatable, drawable)
     player = Player( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-
+    score = 0
     #shots
     Shot.containers = (shots, drawable, updatable)
 
 
 
 
-    #text display
-    score = 0
 
     #game loop
     while True:
@@ -54,6 +55,7 @@ def main():
 
 
        screen.fill("black")
+       background_gif.render(screen, (0, 0))
        draw_text(screen, f"Score: {score}", (255,255,255,), 1, 1)
        updatable.update(dt) #read inputs, update state
 
@@ -71,7 +73,6 @@ def main():
                    shot.kill()
                    obj.split()
                    score += 100
-
 
        for obj in drawable: #render images
           obj.draw(screen)
