@@ -6,6 +6,7 @@ from player import Player
 from asteroidfield import AsteroidField
 from asteroid import Asteroid
 from shot import Shot
+from text_display import draw_text # screen, text, color, x, y
 
 
 def main():
@@ -39,6 +40,11 @@ def main():
     Shot.containers = (shots, drawable, updatable)
 
 
+
+
+    #text display
+    score = 0
+
     #game loop
     while True:
        log_state()
@@ -48,13 +54,14 @@ def main():
 
 
        screen.fill("black")
-
+       draw_text(screen, f"Score: {score}", (255,255,255,), 1, 1)
        updatable.update(dt) #read inputs, update state
 
        for obj in asteroids:
            if obj.collides_with(player):
                log_event("player_hit")
                print("Game Over!")
+               print(f"Your final score is {score}!")
                sys.exit()
 
 
@@ -63,7 +70,7 @@ def main():
                    log_event("asteroid_shot")
                    shot.kill()
                    obj.split()
-
+                   score += 100
 
 
        for obj in drawable: #render images
