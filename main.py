@@ -56,7 +56,7 @@ def main():
 
        screen.fill("black")
        background_gif.render(screen, (0, 0))
-       draw_text(screen, f"Score: {score}", (255,255,255,), 1, 1)
+       draw_text(screen, f"{score}", (255,255,255,), 100, 10)
        updatable.update(dt) #read inputs, update state
 
        for obj in asteroids:

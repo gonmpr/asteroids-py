@@ -21,6 +21,20 @@ class Player(CircleShape):
         pygame.draw.polygon(screen, "white", self.triangle(), LINE_WIDTH)
 
 
+    def keep_on_screen(self):
+        margin = 0
+
+        if self.position.x < -margin:
+            self.position.x = SCREEN_WIDTH + margin
+        elif self.position.x > SCREEN_WIDTH + margin:
+            self.position.x = -margin
+
+        if self.position.y < -margin:
+            self.position.y = SCREEN_HEIGHT + margin
+        elif self.position.y > SCREEN_HEIGHT + margin:
+            self.position.y = -margin
+
+
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
 
@@ -33,16 +47,45 @@ class Player(CircleShape):
         if keys[pygame.K_l]:
             self.rotate(dt)
         if keys[pygame.K_j]:
-            self.move(dt)
+            self.accelerate_forward(dt)
         if keys[pygame.K_k]:
-            self.move(-dt)
+            self.accelerate_backward(dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+
+        self.velocity *= PLAYER_FRICTION
+
+        if self.velocity.length() > PLAYER_SPEED:
+            self.velocity.scale_to_length(PLAYER_SPEED)
+
+        self.position += self.velocity * dt
+
+        self.keep_on_screen()
+
     def move(self, dt):
         unit_vector = pygame.Vector2(0, 1)
         rotated_vector = unit_vector.rotate(self.rotation)
         rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
         self.position += rotated_with_speed_vector
+
+
+
+
+
+
+
+
+
+
+    def accelerate_forward(self, dt):
+        direction = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.velocity += direction * PLAYER_ACCELERATION * dt
+
+    def accelerate_backward(self, dt):
+        direction = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.velocity -= direction * (PLAYER_ACCELERATION * 0.5) * dt
+
+
 
 
     def shoot(self):
